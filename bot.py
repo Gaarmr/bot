@@ -13,7 +13,7 @@ def greet_user(update, context):
     update.message.reply_text('Привет, пользователь! Ты вызвал команду /start')
 
 def main():
-    mybot = Updater("809111474:AAENYVUwhxOMNKTOm5zkEjoKRhj9smt2NZk", use_context=True)
+    mybot = Updater("NO", use_context=True)
     dp = mybot.dispatcher
     dp.add_handler(CommandHandler("start", greet_user))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
