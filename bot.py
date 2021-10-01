@@ -2,7 +2,7 @@ import settings
 import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-logging.basicConfig(filename='bot.log', level=logging.INFO)
+logging.basicConfig(filename='C:\\project\\telegrammbot\\bot.log', level=logging.INFO)
 
 def talk_to_me(update, context):
     user_text = update.message.text 
