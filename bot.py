@@ -1,8 +1,8 @@
-from rules_eng import rules
-import settings
+from glob import glob
 import logging
+import settings
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from random import randint
+from random import randint, choice
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
@@ -47,21 +47,30 @@ def dice_number(update, context):
     update.message.reply_text(message)
 
 def show_rules(update, context):
-    update.message.reply_text(rules)
+    pic_filename='telegrammbot\img\game_dice.png'
+    chat_id = update.effective_chat.id
+    context.bot.send_photo(chat_id=chat_id, photo=open(pic_filename, 'rb'))
+
+def send_cat_picture(update, context):
+    cat_photos_list = glob('telegrammbot\img\cat*.jp*g')
+    cat_pic_filename = choice(cat_photos_list)
+    chat_id = update.effective_chat.id
+    context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
 
 def talk_to_me(update, context):
     user_text = update.message.text 
     print(user_text)
     update.message.reply_text(user_text)
-    update.message.reply_text('Hello! Commands: /start /rules /dice')
+    update.message.reply_text('Hello! Commands: /start /rules /dice /cat')
 
 def greet_user(update, context):
     print('Вызван /start')
-    update.message.reply_text('Hello! Commands: /start /rules /dice')
+    update.message.reply_text('Hello! Commands: /start /rules /dice /cat')
 
 def main():
     mybot = Updater(settings.API_KEY, use_context=True)
     dp = mybot.dispatcher
+    dp.add_handler(CommandHandler('cat', send_cat_picture))
     dp.add_handler(CommandHandler('rules', show_rules))
     dp.add_handler(CommandHandler('dice', dice_number))
     dp.add_handler(CommandHandler("start", greet_user))
