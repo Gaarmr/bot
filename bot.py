@@ -2,6 +2,7 @@ from emoji import emojize
 from glob import glob
 import logging
 import settings
+from telegram import ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from random import randint, choice
 
@@ -73,14 +74,35 @@ def get_gain(update, context):
 
 def greet_user(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
-    update.message.reply_text(f"Hello! Commands: /start /rules /dice /gain /cat {context.user_data['emoji']}!")
+    update.message.reply_text(
+        f"Hello! Commands: /start /rules /dice /gain /cat {context.user_data['emoji']}!",
+        reply_markup = main_keyboard()
+        )
 
 def talk_to_me(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
     username = update.effective_user.first_name
     user_text = update.message.text 
-    update.message.reply_text(f"Hello!, {username} {context.user_data['emoji']}! You wrote: {user_text}")
-    update.message.reply_text('Commands: /start /rules /dice /gain /cat')
+    update.message.reply_text(
+        f"Hello!, {username} {context.user_data['emoji']}! You wrote: {user_text} \nUse /start",
+        reply_markup = main_keyboard()
+        )
+
+def main_keyboard():
+    return ReplyKeyboardMarkup([
+        ['Start'], 
+        ['Meme cat'],
+        [KeyboardButton('Location', request_location=True)]
+        ])
+
+'''
+def user_coordinates(update, context):
+    context.user_data['emoji'] = get_smile(context.user_data)
+    coords = update.message.location
+    update.message.reply_text(
+        f"Ваши координаты {coords} {context.user_data['emoji']}!",
+    )
+'''
 
 def main():
     mybot = Updater(settings.API_KEY, use_context=True)
@@ -90,12 +112,16 @@ def main():
     dp.add_handler(CommandHandler('gain', get_gain))
     dp.add_handler(CommandHandler('dice', dice_number))
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(MessageHandler(Filters.regex('^(Start)$'), greet_user))
+    dp.add_handler(MessageHandler(Filters.regex('^(Meme cat)$'), send_cat_picture))
+    #dp.add_handler(MessageHandler(Filters.location, user_coordinates))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
     logging.info("Bot is start")
    
     mybot.start_polling()
     mybot.idle()
+
 
 if __name__ == "__main__":
     main()
