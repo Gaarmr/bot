@@ -1,3 +1,4 @@
+from emoji import emojize
 from glob import glob
 import logging
 import settings
@@ -57,15 +58,23 @@ def send_cat_picture(update, context):
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
 
+def get_smile(user_data):
+    if 'emoji' not in user_data:
+        smile = choice(settings.USER_EMOJI)
+        return emojize(smile, use_aliases=True)
+    return user_data['emoji']
+
 def talk_to_me(update, context):
+    smile = get_smile(context.user_data)
+    username = update.effective_user.first_name
     user_text = update.message.text 
-    print(user_text)
-    update.message.reply_text(user_text)
-    update.message.reply_text('Hello! Commands: /start /rules /dice /cat')
+    update.message.reply_text(f"Hello!, {username} {smile}! You wrote: {user_text}")
+    update.message.reply_text('Commands: /start /rules /dice /cat')
 
 def greet_user(update, context):
+    smile = get_smile(context.user_data)
     print('Вызван /start')
-    update.message.reply_text('Hello! Commands: /start /rules /dice /cat')
+    update.message.reply_text(f'Hello! Commands: /start /rules /dice /cat {smile}')
 
 def main():
     mybot = Updater(settings.API_KEY, use_context=True)
