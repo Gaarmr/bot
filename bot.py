@@ -34,7 +34,6 @@ def play_dice(user_number, bet, gain):
 
 
 def dice_number(update, context):
-    print(context.args)
     if context.args:
         try: 
             user_number = int(context.args[0])
@@ -58,21 +57,20 @@ def send_cat_picture(update, context):
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
 
-def get_smile(user_data):
-    if 'emoji' not in user_data:
-        smile = choice(settings.USER_EMOJI)
-        return emojize(smile, use_aliases=True)
-    return user_data['emoji']
+def get_smile():
+    smile = choice(settings.USER_EMOJI)
+    smile = emojize(smile, use_aliases=True)
+    return smile
 
 def talk_to_me(update, context):
-    smile = get_smile(context.user_data)
+    smile = get_smile()
     username = update.effective_user.first_name
     user_text = update.message.text 
     update.message.reply_text(f"Hello!, {username} {smile}! You wrote: {user_text}")
     update.message.reply_text('Commands: /start /rules /dice /cat')
 
 def greet_user(update, context):
-    smile = get_smile(context.user_data)
+    smile = get_smile()
     print('Вызван /start')
     update.message.reply_text(f'Hello! Commands: /start /rules /dice /cat {smile}')
 
