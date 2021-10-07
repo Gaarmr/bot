@@ -7,7 +7,7 @@ def main_keyboard():
     return ReplyKeyboardMarkup([
         ['Start'], 
         ['Rules', 'Dice', 'Gain'],
-        ['Meme cat'],
+        ['Pic'],
         [KeyboardButton('Location', request_location=True)]
         ])
 

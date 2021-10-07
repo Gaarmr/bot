@@ -5,7 +5,7 @@ from utils import main_keyboard, get_smile
 def greet_user(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
     update.message.reply_text(
-        f"Hello! Commands: /start /rules /dice /gain /cat {context.user_data['emoji']}!",
+        f"Hello! Commands: /start /rules /dice /gain /pic {context.user_data['emoji']}!",
         reply_markup = main_keyboard()
         )
 
@@ -18,8 +18,8 @@ def talk_to_me(update, context):
         reply_markup = main_keyboard()
         )
 
-def send_cat_picture(update, context):
-    cat_photos_list = glob('telegrammbot\img\cat*.jp*g')
+def send_picture(update, context):
+    cat_photos_list = glob('telegrammbot\img\pic*.*')
     cat_pic_filename = choice(cat_photos_list)
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
