@@ -91,6 +91,7 @@ def talk_to_me(update, context):
 def main_keyboard():
     return ReplyKeyboardMarkup([
         ['Start'], 
+        ['Rules', 'Dice', 'Gain'],
         ['Meme cat'],
         [KeyboardButton('Location', request_location=True)]
         ])
@@ -112,6 +113,9 @@ def main():
     dp.add_handler(CommandHandler('gain', get_gain))
     dp.add_handler(CommandHandler('dice', dice_number))
     dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(MessageHandler(Filters.regex('^(Gain)$'), get_gain))
+    dp.add_handler(MessageHandler(Filters.regex('^(Dice)$'), dice_number))
+    dp.add_handler(MessageHandler(Filters.regex('^(Rules)$'), show_rules))
     dp.add_handler(MessageHandler(Filters.regex('^(Start)$'), greet_user))
     dp.add_handler(MessageHandler(Filters.regex('^(Meme cat)$'), send_cat_picture))
     #dp.add_handler(MessageHandler(Filters.location, user_coordinates))
