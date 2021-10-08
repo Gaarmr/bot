@@ -43,7 +43,7 @@ def play_dice(user_number, bet, gain, context):
     return message
 
 def show_rules(update, context):
-    pic_filename='telegrammbot\img\game_dice.png'
+    pic_filename='img\game_dice.png'
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(pic_filename, 'rb'))
 

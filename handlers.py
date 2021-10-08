@@ -1,4 +1,5 @@
 from glob import glob
+import os
 from random import choice
 from utils import main_keyboard, get_smile
 
@@ -19,7 +20,7 @@ def talk_to_me(update, context):
         )
 
 def send_picture(update, context):
-    cat_photos_list = glob('telegrammbot\img\pic*.*')
+    cat_photos_list = glob('img\pic*.*')
     cat_pic_filename = choice(cat_photos_list)
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
@@ -30,3 +31,11 @@ def user_coordinates(update, context):
     update.message.reply_text(
         f"Ваши координаты {coords} {context.user_data['emoji']}!",
     )
+
+def check_user_photo(update, context):
+    update.message.reply_text('Processing the photo')
+    os.makedirs('downloads', exist_ok=True)
+    user_photo = context.bot.getFile(update.message.photo[-1].file_id)
+    file_name = os.path.join("downloads", f"{user_photo.file_id}.jpg")
+    user_photo.download(file_name)
+    update.message.reply_text('Your photo is saved')
