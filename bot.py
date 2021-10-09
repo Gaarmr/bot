@@ -14,18 +14,18 @@ def main():
     dp = mybot.dispatcher
 
     questionnaire = ConversationHandler(
-       entry_points=[MessageHandler(Filters.regex('^(Questionnaire)$'), quest_start)],
-       states={
-           "name": [MessageHandler(Filters.text, quest_name)],
-           "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), quest_rate)],
-           "comment": [
-               CommandHandler('skip', quest_skip),
-               MessageHandler(Filters.text | Filters.video | Filters.photo | Filters.document| Filters.location, quest_comment)
-           ]
-       },
-       fallbacks=[
-           MessageHandler(Filters.text, quest_dontknow)
-       ] 
+        entry_points=[MessageHandler(Filters.regex('^(Questionnaire)$'), quest_start)],
+        states={
+            "name": [MessageHandler(Filters.text, quest_name)],
+            "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), quest_rate)],
+            "comment": [
+                CommandHandler('skip', quest_skip),
+                MessageHandler(Filters.text | Filters.video | Filters.photo | Filters.document| Filters.location, quest_comment)
+            ]
+        },
+        fallbacks=[
+            MessageHandler(Filters.text, quest_dontknow)
+        ] 
     )
 
     dp.add_handler(questionnaire)
