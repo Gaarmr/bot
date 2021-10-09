@@ -20,10 +20,10 @@ def talk_to_me(update, context):
         )
 
 def send_picture(update, context):
-    cat_photos_list = glob('img\pic*.*')
-    cat_pic_filename = choice(cat_photos_list)
+    photos_list = glob('img\pic*.*')
+    pic_filename = choice(photos_list)
     chat_id = update.effective_chat.id
-    context.bot.send_photo(chat_id=chat_id, photo=open(cat_pic_filename, 'rb'))
+    context.bot.send_photo(chat_id=chat_id, photo=open(pic_filename, 'rb'))
 
 def user_coordinates(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
