@@ -1,4 +1,6 @@
-from telegram import ReplyKeyboardRemove, ReplyKeyboardMarkup
+from telegram import ParseMode, ReplyKeyboardRemove, ReplyKeyboardMarkup
+from telegram.ext.conversationhandler import ConversationHandler
+from utils import main_keyboard
 
 def quest_start(update, context):
     update.message.reply_text(
@@ -10,7 +12,7 @@ def quest_start(update, context):
 def quest_name(update, context):
     user_name = update.message.text
     if len(user_name.split()) < 2:
-        update.message.replt_text('Please, enter your first and last name')
+        update.message.reply_text('Please, enter your first and last name')
         return 'name'
     else:
         context.user_data['quest'] = {'name': user_name}
@@ -27,3 +29,28 @@ def quest_rate(update, context):
         "Leave a free-form comment or skip this step by typing /skip"
     )
     return "comment"
+
+def quest_comment(update, context):
+    context.user_data['quest']['comment'] = update.message.text
+    user_text = format_quest(context.user_data['quest'])
+    update.message.reply_text(user_text, reply_markup=main_keyboard(), parse_mode=ParseMode.HTML)
+    return ConversationHandler.END
+
+def quest_skip(update, context):
+    user_text = format_quest(context.user_data['quest'])
+    update.message.reply_text(user_text, reply_markup=main_keyboard(), parse_mode=ParseMode.HTML)
+    return ConversationHandler.END
+
+
+def format_quest(quest):
+    user_text = f"""
+<b>Name</b>: {quest['name']}
+<b>Rate</b>: {quest['rating']}
+"""
+    if 'comment' in quest:
+        user_text += f"\n<b>Comment</b>: {quest['comment']}"
+    return user_text
+
+
+def quest_dontknow(update, context):
+    update.message.reply_text('Please, rate the bot on a scale of 1 to 5')

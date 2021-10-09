@@ -1,7 +1,7 @@
 from dice import dice_number, get_gain, show_rules
 from handlers import check_user_photo, greet_user, send_picture, talk_to_me, user_coordinates
 import logging
-from questionnaire import quest_start, quest_name, quest_rate
+from questionnaire import quest_start, quest_name, quest_rate, quest_skip, quest_comment, quest_dontknow
 import settings
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 #from utils import is_cat
@@ -17,9 +17,15 @@ def main():
        entry_points=[MessageHandler(Filters.regex('^(Questionnaire)$'), quest_start)],
        states={
            "name": [MessageHandler(Filters.text, quest_name)],
-           "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), quest_rate)]
+           "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), quest_rate)],
+           "comment": [
+               CommandHandler('skip', quest_skip),
+               MessageHandler(Filters.text | Filters.video | Filters.photo | Filters.document| Filters.location, quest_comment)
+           ]
        },
-       fallbacks=[] 
+       fallbacks=[
+           MessageHandler(Filters.text, quest_dontknow)
+       ] 
     )
 
     dp.add_handler(questionnaire)
