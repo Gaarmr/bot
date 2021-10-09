@@ -3,5 +3,6 @@ settings.py
 .vscode/
 .idea/
 env/
+img/
 .DS_Store
 __pycache__/
