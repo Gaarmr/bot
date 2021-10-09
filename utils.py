@@ -39,11 +39,11 @@ def is_cat(user_photo):
         print("\tDetails: {}".format(response.outputs[0].status.details))
         raise Exception("Request failed, status code: " + str(response.status.code))
     for concept in response.outputs[0].data.concepts:
-        #print('%12s: %.2f' % (concept.name, concept.value))
+        print('%12s: %.2f' % (concept.name, concept.value))
         if concept.name == 'cat':
             return True
         return False
     
 if __name__ == "__main__":
-    response = is_cat('https://api.telegram.org/file/bot809111474:AAGUb8O8rHqU1NGOUJ4j31Re14-5cuvW2TU/photos/file_2.jpg')
+    response = is_cat('https://upload.wikimedia.org/wikipedia/commons/7/75/Rana_esculenta_on_Nymphaea_edit.JPG')
     print(response)
