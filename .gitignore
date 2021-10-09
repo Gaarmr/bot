@@ -4,5 +4,6 @@ settings.py
 .idea/
 env/
 img/
+downloads/
 .DS_Store
 __pycache__/
