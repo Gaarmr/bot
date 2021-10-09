@@ -33,7 +33,7 @@ def main():
     dp.add_handler(CommandHandler('rules', show_rules))
     dp.add_handler(CommandHandler('gain', get_gain))
     dp.add_handler(CommandHandler('dice', dice_number))
-    dp.add_handler(CommandHandler("start", greet_user))
+    dp.add_handler(CommandHandler('start', greet_user))
     dp.add_handler(MessageHandler(Filters.regex('^(Pic)$'), send_picture))
     dp.add_handler(MessageHandler(Filters.regex('^(Gain)$'), get_gain))
     dp.add_handler(MessageHandler(Filters.regex('^(Dice)$'), dice_number))
@@ -43,7 +43,7 @@ def main():
     dp.add_handler(MessageHandler(Filters.location, user_coordinates))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
-    logging.info("Bot is start")
+    logging.info('Bot is start')
    
     mybot.start_polling()
     mybot.idle()

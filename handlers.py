@@ -1,7 +1,7 @@
 from glob import glob
 import os
 from random import choice
-from utils import main_keyboard, get_smile
+from utils import is_cat, main_keyboard, get_smile
 
 def greet_user(update, context):
     context.user_data['emoji'] = get_smile(context.user_data)
@@ -34,8 +34,12 @@ def user_coordinates(update, context):
 
 def check_user_photo(update, context):
     update.message.reply_text('Processing the photo')
-    os.makedirs('downloads', exist_ok=True)
     user_photo = context.bot.getFile(update.message.photo[-1].file_id)
-    file_name = os.path.join("downloads", f"{user_photo.file_id}.jpg")
-    user_photo.download(file_name)
-    update.message.reply_text('Your photo is saved')
+    url_file_path = user_photo.file_path
+    if is_cat(url_file_path):
+        update.message.reply_text('Cat is detected, saved photo')
+        os.makedirs('downloads', exist_ok=True)
+        file_name = os.path.join("img", f"pic_{user_photo.file_id}.jpg")
+        user_photo.download(file_name)
+    else:
+        update.message.reply_text('Cat is not detected, delete photo')
