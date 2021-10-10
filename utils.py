@@ -39,7 +39,7 @@ def is_cat(user_photo):
         print("\tDetails: {}".format(response.outputs[0].status.details))
         raise Exception("Request failed, status code: " + str(response.status.code))
     for concept in response.outputs[0].data.concepts:
-        print('%12s: %.2f' % (concept.name, concept.value))
+        #print('%12s: %.2f' % (concept.name, concept.value))
         if concept.name == 'cat':
             return True
         return False

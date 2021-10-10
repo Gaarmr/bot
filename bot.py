@@ -4,7 +4,6 @@ import logging
 from questionnaire import quest_start, quest_name, quest_rate, quest_skip, quest_comment, quest_dontknow
 import settings
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
-#from utils import is_cat
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
