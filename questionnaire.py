@@ -1,3 +1,4 @@
+from db import db, get_or_create_user, save_quest
 from telegram import ParseMode, ReplyKeyboardRemove, ReplyKeyboardMarkup
 from telegram.ext.conversationhandler import ConversationHandler
 from utils import main_keyboard
@@ -26,18 +27,22 @@ def quest_name(update, context):
 def quest_rate(update, context):
     context.user_data["quest"]["rating"] = int(update.message.text)
     update.message.reply_text(
-        "Leave a free-form comment or skip this step by typing /skip"
+        "Enter a free-form comment or skip this step by typing /skip"
     )
     return "comment"
 
 def quest_comment(update, context):
     context.user_data['quest']['comment'] = update.message.text
+    user = get_or_create_user(db, update.effective_user, update.message.chat_id)
+    save_quest(user['user_id'], context.user_data['quest'])
     user_text = format_quest(context.user_data['quest'])
     update.message.reply_text(user_text, reply_markup=main_keyboard(), parse_mode=ParseMode.HTML)
     return ConversationHandler.END
 
 def quest_skip(update, context):
     user_text = format_quest(context.user_data['quest'])
+    user = get_or_create_user(db, update.effective_user, update.message.chat_id)
+    save_quest(user['user_id'], context.user_data['quest'])
     update.message.reply_text(user_text, reply_markup=main_keyboard(), parse_mode=ParseMode.HTML)
     return ConversationHandler.END
 

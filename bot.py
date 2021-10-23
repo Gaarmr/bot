@@ -1,30 +1,39 @@
 from dice import dice_number, get_gain, show_rules
-from handlers import check_user_photo, greet_user, send_picture, talk_to_me, user_coordinates
+from handlers import (check_user_photo, greet_user, send_picture, talk_to_me,
+                      user_coordinates)
 import logging
-from questionnaire import quest_start, quest_name, quest_rate, quest_skip, quest_comment, quest_dontknow
+from questionnaire import (quest_start, quest_name, quest_rate, quest_skip,
+                           quest_comment, quest_dontknow)
 import settings
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
+from telegram.ext import (Updater, CommandHandler, MessageHandler, Filters,
+                          ConversationHandler)
 
 logging.basicConfig(filename='bot.log', level=logging.INFO)
 
+
 def main():
     mybot = Updater(settings.API_KEY, use_context=True)
-    
     dp = mybot.dispatcher
 
     questionnaire = ConversationHandler(
-        entry_points=[MessageHandler(Filters.regex('^(Questionnaire)$'), quest_start)],
+        entry_points=[MessageHandler(Filters.regex(
+            '^(Questionnaire)$'),
+            quest_start
+            )],
         states={
             "name": [MessageHandler(Filters.text, quest_name)],
-            "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), quest_rate)],
+            "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'),
+                                      quest_rate)],
             "comment": [
                 CommandHandler('skip', quest_skip),
-                MessageHandler(Filters.text | Filters.video | Filters.photo | Filters.document| Filters.location, quest_comment)
+                MessageHandler(Filters.text | Filters.video | Filters.photo |
+                               Filters.document | Filters.location,
+                               quest_comment)
             ]
         },
         fallbacks=[
             MessageHandler(Filters.text, quest_dontknow)
-        ] 
+        ]
     )
 
     dp.add_handler(questionnaire)
@@ -43,9 +52,9 @@ def main():
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
     logging.info('Bot is start')
-   
     mybot.start_polling()
     mybot.idle()
+
 
 if __name__ == "__main__":
     main()

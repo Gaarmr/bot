@@ -1,21 +1,22 @@
+from db import db, get_or_create_user
 from glob import glob
 import os
 from random import choice
-from utils import is_cat, main_keyboard, get_smile
+from utils import is_cat, main_keyboard
 
 def greet_user(update, context):
-    context.user_data['emoji'] = get_smile(context.user_data)
+    user = get_or_create_user(db, update.effective_user, update.message.chat_id)
     update.message.reply_text(
-        f"Hello! Commands: /start /rules /dice /gain /pic {context.user_data['emoji']}!",
+        f"Hello! Commands: /start /rules /dice /gain /pic {user['emoji']}!",
         reply_markup = main_keyboard()
         )
 
 def talk_to_me(update, context):
-    context.user_data['emoji'] = get_smile(context.user_data)
+    user = get_or_create_user(db, update.effective_user, update.message.chat_id)
     username = update.effective_user.first_name
     user_text = update.message.text 
     update.message.reply_text(
-        f"Hello!, {username} {context.user_data['emoji']}! You wrote: {user_text} \nUse /start",
+        f"Hello!, {username} {user['emoji']}! You wrote: {user_text} \nUse /start",
         reply_markup = main_keyboard()
         )
 
@@ -26,10 +27,10 @@ def send_picture(update, context):
     context.bot.send_photo(chat_id=chat_id, photo=open(pic_filename, 'rb'))
 
 def user_coordinates(update, context):
-    context.user_data['emoji'] = get_smile(context.user_data)
+    user = get_or_create_user(db, update.effective_user, update.message.chat_id)
     coords = update.message.location
     update.message.reply_text(
-        f"Ваши координаты {coords} {context.user_data['emoji']}!",
+        f"Ваши координаты {coords} {user['emoji']}!",
     )
 
 def check_user_photo(update, context):

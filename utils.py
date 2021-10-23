@@ -1,10 +1,7 @@
-
 from clarifai_grpc.grpc.api import service_pb2, resources_pb2, service_pb2_grpc
 from clarifai_grpc.grpc.api.status import status_code_pb2
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 
-from emoji import emojize
-from random import choice
 import settings
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
@@ -15,12 +12,6 @@ def main_keyboard():
         ['Pic', 'Questionnaire'],
         [KeyboardButton('Location', request_location=True)]
         ])
-
-def get_smile(user_data):
-    if 'emoji' not in user_data:
-        smile = choice(settings.USER_EMOJI)
-        return emojize(smile, use_aliases=True)
-    return user_data['emoji']
 
 def is_cat(user_photo):
     stub = service_pb2_grpc.V2Stub(ClarifaiChannel.get_json_channel())
