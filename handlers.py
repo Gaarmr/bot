@@ -11,14 +11,16 @@ def greet_user(update, context):
         reply_markup = main_keyboard()
         )
 
+
 def talk_to_me(update, context):
     user = get_or_create_user(db, update.effective_user, update.message.chat_id)
     username = update.effective_user.first_name
     user_text = update.message.text 
     update.message.reply_text(
         f"Hello!, {username} {user['emoji']}! You wrote: {user_text} \nUse /start",
-        reply_markup = main_keyboard()
+        reply_markup=main_keyboard()
         )
+
 
 def send_picture(update, context):
     photos_list = glob('img\pic*.*')
@@ -26,12 +28,14 @@ def send_picture(update, context):
     chat_id = update.effective_chat.id
     context.bot.send_photo(chat_id=chat_id, photo=open(pic_filename, 'rb'))
 
+
 def user_coordinates(update, context):
     user = get_or_create_user(db, update.effective_user, update.message.chat_id)
     coords = update.message.location
     update.message.reply_text(
         f"Ваши координаты {coords} {user['emoji']}!",
     )
+
 
 def check_user_photo(update, context):
     update.message.reply_text('Processing the photo')
